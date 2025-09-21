@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import duckdb as ddb
 import streamlit as st
+import os
 
 st.title('Hapiness reserch')
 
@@ -26,7 +27,11 @@ st.write(f'音声日記: {data_input_1}')
 st.write(f'今日の幸せ: {data_input_2}')
 st.write(f'今日の幸せポイント: {data_input_3}')
 
-con_k1 = ddb.connect("log_k1.duckdb")
+# Renderでは /var/data がある → そこに保存
+# ローカルで動かすときはカレントディレクトリに保存
+DB_PATH = "/var/data/log_k1.duckdb" if os.path.isdir("/var/data") else "log_k1.duckdb"
+
+con_k1 = ddb.connect(DB_PATH)
 
 # DuckDBにテーブルがなければ作成
 con_k1.execute("""
